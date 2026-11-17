@@ -2,7 +2,7 @@
 
 **An interactive guide to banking architecture, infrastructure, and security concepts.**
 
-[Explore the live site](https://riad67.github.io/securebank/) · [Report an issue](https://github.com/riad67/securebank/issues)
+[Click Here --> Explore the live site](https://riad67.github.io/securebank/) · [Report an issue](https://github.com/riad67/securebank/issues)
 
 SecureBank Architecture Explorer brings a conceptual banking lab into a single interactive interface. It helps learners and reviewers navigate a supplied project structure, explore architecture diagrams, follow example transaction flows, and examine the relationships between application, network, data, security, and operational concepts.
 
