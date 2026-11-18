@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080D18">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#080D18">
 <title>SecureBank | Enterprise Architecture Explorer</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath fill='%231a3549' stroke='%2375c9e8' stroke-width='2' d='M16 2 28 7v8c0 7-5 12-12 15C9 27 4 22 4 15V7z'/%3E%3Cpath stroke='%23c7e9f2' stroke-width='2' d='M10 13h12M11 17h10M13 21h6'/%3E%3C/svg%3E">
 <style>
@@ -131,6 +131,64 @@ body.lv-b .lt-tab[data-t=apply],body.lv-b .lt-tab[data-t=secure],body.lv-b .lt-t
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 @media(max-width:760px){.lp-bar{left:8px;right:8px;transform:none;width:auto;bottom:8px;max-height:40vh}.trail .t-foot{display:none}.sb-tip{display:none}}
 .fm-wrap{overflow:auto;max-height:44vh;border:1px solid #26364d;border-radius:9px;margin:8px 0}.fm{border-collapse:collapse;width:100%;font-size:11px;min-width:760px}.fm th{position:sticky;top:0;background:#12213a;color:#8fa0b8;text-align:left;font-size:9px;letter-spacing:.08em;text-transform:uppercase;padding:6px}.fm td{padding:3px;border-top:1px solid #1f2f47}.fm input,.fm select{width:100%;height:26px;background:#0c1626;color:var(--text);border:1px solid #2b3b55;border-radius:6px;padding:0 6px;font-size:11px}.fm input:focus,.fm select:focus{border-color:var(--cyan);outline:none}.fm .flag{color:#ffb4bc;font-weight:700;white-space:nowrap}.fm .ok{color:#7ee2a1}.fm button{height:26px}
+
+/* ===== Adaptive layout: phone / tablet / laptop / desktop ===== */
+:root{--side:clamp(200px,17vw,248px);--right:clamp(290px,26vw,350px);--topbar-h:68px}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{min-height:100vh;min-height:100dvh;overflow-x:hidden}
+.app{min-height:100vh;min-height:100dvh;grid-template-rows:var(--topbar-h) 1fr}
+.topbar{height:var(--topbar-h);padding-left:max(14px,env(safe-area-inset-left));padding-right:max(14px,env(safe-area-inset-right))}
+.brand,.top-actions{min-width:0}
+.layout{height:calc(100vh - var(--topbar-h));height:calc(100dvh - var(--topbar-h))}
+.main{overflow:auto;overscroll-behavior:contain;grid-template-rows:auto auto minmax(440px,1fr);padding:clamp(12px,2vw,24px);gap:clamp(10px,1.6vw,18px)}
+.stats{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+.heading-row{flex-wrap:wrap}.heading-copy{flex:1 1 320px}.heading-row p{max-width:none}.view-actions{flex:0 1 auto}
+.workbench{min-height:440px}
+.lp-bar{max-height:46vh;max-height:46dvh}.modal{max-height:85vh;max-height:85dvh}.pal-list{max-height:46vh;max-height:46dvh}
+@media(min-width:1101px) and (max-height:760px){.stat-card{min-height:56px;padding:8px 12px}.stat-value{font-size:17px;margin-top:2px}.heading-row h1{font-size:21px}.heading-row p{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}}
+/* tablets and small laptops: navigation becomes a drawer, canvas gets the room */
+@media(max-width:1100px){
+.layout{grid-template-columns:minmax(0,1fr)}
+.sidebar{position:fixed;z-index:25;left:0;top:var(--topbar-h);bottom:0;width:min(280px,82vw);transform:translateX(-102%);visibility:hidden;transition:transform .2s,visibility 0s linear .2s;box-shadow:var(--shadow)}
+body.menu-open .sidebar{transform:none;visibility:visible;transition:transform .2s,visibility 0s}
+body.menu-open .mobile-overlay{display:block;position:fixed;inset:var(--topbar-h) 0 0;background:#02061099;z-index:20}
+.mobile-menu{display:grid}.top-title,.system-status,.canvas-hint{display:none}
+}
+/* stacked: diagram on top, inspector underneath, the page itself scrolls */
+@media(max-width:960px){
+.layout{height:auto;min-height:calc(100dvh - var(--topbar-h))}
+.main{height:auto;overflow:visible;grid-template-rows:auto auto auto}
+.workbench{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto;height:auto;min-height:0;overflow:hidden}
+.canvas-col{min-height:0}
+.canvas-wrap{flex:none;height:clamp(320px,58vw,620px);min-height:0;overflow:hidden}
+.canvas-wrap.tree-mode{height:min(72vh,640px);height:min(72dvh,640px)}
+.canvas-wrap.lab-mode{height:auto;min-height:320px;max-height:82vh;max-height:82dvh;overflow:auto!important}
+.graph-svg{width:100%;height:100%;min-width:0}
+.tree-view{min-height:0}
+.detail{border-left:0;border-top:1px solid #304257;max-height:none;min-height:0;overflow:visible}
+.detail-body{max-height:none;overflow:visible}
+.searchbox{width:min(240px,34vw)}
+}
+/* phones */
+@media(max-width:680px){
+:root{--topbar-h:60px}
+.canvas-wrap{height:clamp(300px,62vh,520px);height:clamp(300px,62dvh,520px)}
+.stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+.heading-row h1{font-size:clamp(18px,5.4vw,22px)}
+.view-actions .tool-btn{flex:1 1 auto}
+.modal-backdrop{padding:10px}.modal{padding:16px}
+.trail{left:8px;right:8px;bottom:8px;max-width:none;max-height:46%;overflow:auto}
+.lab-bar{left:8px;right:8px}
+.canvas-toolbar{gap:6px}
+}
+@media(max-width:480px){.ev-sum,.mt-grid{grid-template-columns:1fr}}
+@media(max-height:500px) and (orientation:landscape){.canvas-wrap,.canvas-wrap.tree-mode{height:calc(100vh - 110px);height:calc(100dvh - 110px)}.stat-card{min-height:52px}}
+/* touch screens: finger-sized targets, no iOS focus-zoom */
+@media(pointer:coarse){
+.tool-btn,.icon-btn,.nav-item{min-height:44px}.icon-btn{min-width:44px}
+.canvas-tools .tool-btn{min-width:44px;min-height:40px}.tree-node{min-height:40px}
+input,select{font-size:16px!important}
+}
 </style>
 </head>
 <body>
@@ -772,7 +830,7 @@ function renderFlowControls(){const old=document.getElementById('flowBar');if(ol
 function renderOSI(){const priorFlow=document.getElementById('flowBar');if(priorFlow)priorFlow.remove();const x=140,y=26,w=710,h=69,gap=9;const layerMarkup=osiLayers.map((l,i)=>{const yy=y+i*(h+gap);const sel=state.selected?.kind==='osi'&&state.selected.ref.id===l.id;return `<g class="layer ${sel?'selected':''}" data-id="${l.id}" tabindex="0" role="button" aria-pressed="${!!sel}" aria-label="Layer ${l.num} ${esc(l.name)}"><title>Layer ${l.num} ${esc(l.name)} · ${esc(l.desc)}</title><rect x="${x}" y="${yy}" width="${w}" height="${h}" rx="9"/><rect x="${x+12}" y="${yy+13}" width="42" height="42" rx="8" fill="#0d3344" stroke="#0c5269"/><text x="${x+33}" y="${yy+39}" text-anchor="middle" fill="#83eaff" font-size="16" font-weight="700">${l.num}</text><text class="layer-title" x="${x+70}" y="${yy+24}">${esc(l.name)}</text><text class="layer-desc" x="${x+70}" y="${yy+42}">${esc(l.tech)}</text><text class="layer-desc" x="${x+70}" y="${yy+57}">${esc(l.components)}</text><text x="${x+w-16}" y="${yy+39}" fill="#00d4ff" text-anchor="end" font-size="12">↗</text></g>`}).join('');graph.innerHTML=`<defs>${'<pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r=".6" fill="#48607c" opacity=".4"/></pattern>'}</defs><g class="viewport">${layerMarkup}<text x="500" y="585" text-anchor="middle" fill="#788ba5" font-size="10">Conceptual mapping: protocols and controls may span more than one OSI layer.</text></g>`;graph.querySelectorAll('.layer').forEach(el=>{const act=()=>{const l=osiLayers.find(x=>x.id===el.dataset.id);state.selected={kind:'osi',ref:l};renderOSI();renderDetail({kind:'osi',ref:l})};el.addEventListener('click',act);el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();graph.querySelector(`[data-id="${CSS.escape(el.dataset.id)}"]`)?.focus({preventScroll:true})}})})}
 function renderTree(filter=''){const q=filter.trim().toLowerCase();const root=FS;function visible(n){return !q||n.path.toLowerCase().includes(q)||(n.children||[]).some(visible)}function renderNode(n,depth){if(!visible(n))return '';const has=n.type==='folder',open=has&&(state.expanded.has(n.path)||!!q);const matches=q&&n.path.toLowerCase().includes(q);const selected=state.selected&&(state.selected.ref===n);const icon=iconFor(n);const childCount=n.children?.length||0;return `<div class="tree-row"><button class="tree-node ${selected?'selected':''}" data-path="${esc(n.path)}" title="${esc(describeNode(n))}" style="padding-left:7px" ${has?`aria-expanded="${open}"`:''} aria-pressed="${!!selected}"><span class="twisty">${has?(open?'▾':'▸'):''}</span><span class="kind" style="color:${iconColor(n)}">${esc(icon)}</span><span>${esc(n.name)}${matches&&q?` <span style="color:#8cecff">· match</span>`:''}</span><span class="tree-meta">${has?`${childCount} direct · ${countDesc(n)} nested`:esc(fileExt(n))}</span></button>${has&&open?`<div class="tree-children">${(n.children||[]).map(c=>renderNode(c,depth+1)).join('')}</div>`:''}</div>`}treeView.innerHTML=`<div class="tree-toolbar"><button class="tool-btn" data-tree="expand">＋ Expand all</button><button class="tool-btn" data-tree="collapse">− Collapse</button><span style="font-size:10px;color:#8495ad;margin-left:auto">${q?`Matches in ${allNodes.filter(n=>n.path.toLowerCase().includes(q)).length} paths`:'Select a folder or file'}</span></div><div class="tree-scroll">${renderNode(root,0)||'<div class="tree-empty" role="status">No matching files or folders. Try a different search.</div>'}</div>`;treeView.querySelectorAll('.tree-node').forEach(btn=>btn.addEventListener('click',()=>{const n=F(btn.dataset.path);if(!n)return;if(n.type==='folder'){if(state.expanded.has(n.path))state.expanded.delete(n.path);else state.expanded.add(n.path)}state.selected={kind:n.type,ref:n};renderTree(q);renderDetail(state.selected);treeView.querySelector(`[data-path="${CSS.escape(n.path)}"]`)?.focus({preventScroll:true})}));treeView.querySelectorAll('[data-tree]').forEach(btn=>btn.addEventListener('click',()=>{if(btn.dataset.tree==='expand'){allNodes.filter(n=>n.type==='folder').forEach(n=>state.expanded.add(n.path))}else state.expanded=new Set(['securebank-x']);renderTree(q)}))}
 function iconColor(n){if(n.type==='folder')return '#f5b84c';const e=n.name.toLowerCase();if(e.endsWith('.py'))return '#7db6ff';if(e.endsWith('.sql'))return '#65b8ff';if(e.endsWith('.md'))return '#a2b0c4';if(e.endsWith('.sh'))return '#74dc9a';if(e.endsWith('.crt')||e.endsWith('.key')||e.endsWith('.gpg'))return '#ff8792';if(e.endsWith('.tar.gz')||e.endsWith('.dump'))return '#bd9cff';if(e==='dockerfile')return '#43d8f4';if(e.endsWith('.yml')||e.endsWith('.conf'))return '#f1c36d';return '#9aa9bf'}
-function zoom(by){state.scale=Math.max(.55,Math.min(2.25,state.scale+by));renderGraph()}function resetGraph(){state.scale=1;state.tx=0;state.ty=0;renderGraph()}document.getElementById('zoomIn').addEventListener('click',()=>zoom(.12));document.getElementById('zoomOut').addEventListener('click',()=>zoom(-.12));document.getElementById('resetView').addEventListener('click',resetGraph);graph.addEventListener('wheel',e=>{if(state.view==='filesystem'||state.view==='osi'||state.view==='lab_transfer'||graphData[state.view]?.lab)return;e.preventDefault();zoom(e.deltaY<0?.08:-.08)},{passive:false});graph.addEventListener('pointerdown',e=>{if(state.view==='osi'||state.view==='filesystem'||state.view==='lab_transfer'||e.target.closest('.node,.layer'))return;const m=graph.getScreenCTM();if(!m)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse());state.pan={x:pt.x-state.tx,y:pt.y-state.ty};graph.setPointerCapture(e.pointerId)});graph.addEventListener('pointermove',e=>{if(!state.pan)return;const m=graph.getScreenCTM();if(!m)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse());state.tx=pt.x-state.pan.x;state.ty=pt.y-state.pan.y;const g=graph.querySelector('.viewport');if(g)g.setAttribute('transform',`translate(${state.tx} ${state.ty}) scale(${state.scale})`)});graph.addEventListener('pointerup',()=>state.pan=null);graph.addEventListener('pointercancel',()=>state.pan=null);
+function zoom(by){state.scale=Math.max(.55,Math.min(3.5,state.scale+by));renderGraph()}function resetGraph(){state.scale=1;state.tx=0;state.ty=0;renderGraph()}document.getElementById('zoomIn').addEventListener('click',()=>zoom(.12));document.getElementById('zoomOut').addEventListener('click',()=>zoom(-.12));document.getElementById('resetView').addEventListener('click',resetGraph);graph.addEventListener('wheel',e=>{if(state.view==='filesystem'||state.view==='osi'||state.view==='lab_transfer'||graphData[state.view]?.lab)return;e.preventDefault();zoom(e.deltaY<0?.08:-.08)},{passive:false});graph.addEventListener('pointerdown',e=>{if(state.view==='osi'||state.view==='filesystem'||state.view==='lab_transfer'||e.target.closest('.node,.layer'))return;const m=graph.getScreenCTM();if(!m)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse());state.pan={x:pt.x-state.tx,y:pt.y-state.ty};graph.setPointerCapture(e.pointerId)});graph.addEventListener('pointermove',e=>{if(!state.pan)return;const m=graph.getScreenCTM();if(!m)return;const pt=new DOMPoint(e.clientX,e.clientY).matrixTransform(m.inverse());state.tx=pt.x-state.pan.x;state.ty=pt.y-state.pan.y;const g=graph.querySelector('.viewport');if(g)g.setAttribute('transform',`translate(${state.tx} ${state.ty}) scale(${state.scale})`)});graph.addEventListener('pointerup',()=>state.pan=null);graph.addEventListener('pointercancel',()=>state.pan=null);
 function showSearchResults(q){const input=document.getElementById('globalSearch');if(!q)return;const results=allNodes.filter(n=>n.path.toLowerCase().includes(q.toLowerCase())).slice(0,50);if(!results.length){toast('No matching files or folders');return}nav('filesystem');const n=results[0];for(let p=n.parent;p;p=p.parent)state.expanded.add(p.path);state.selected={kind:n.type,ref:n};renderTree(q);renderDetail(state.selected);setTimeout(()=>{const el=treeView.querySelector(`[data-path="${CSS.escape(n.path)}"]`);el?.scrollIntoView({block:'center',behavior:'smooth'})},50)}const searchInput=document.getElementById('globalSearch');
 searchInput.addEventListener('input',()=>{const v=searchInput.value.trim();if(state.view==='filesystem')renderTree(v);const count=v?allNodes.filter(n=>n.path.toLowerCase().includes(v.toLowerCase())).length:0;document.getElementById('searchStatus').textContent=v?(count?`${count} matching paths. Press Enter to see results.`:'No matching paths. Try another search.'):'Type a file or folder name, then press Enter.'});
 searchInput.addEventListener('keydown',e=>{if(e.key!=='Enter')return;e.preventDefault();const q=searchInput.value.trim();if(!q){toast('Enter a file or folder name to search.');return}const matches=allNodes.filter(n=>n.path.toLowerCase().includes(q.toLowerCase()));if(!matches.length){toast('No matching files or folders. Try a different search.');return}showSearchPopup(matches,q)});
@@ -1305,6 +1363,15 @@ const paint=x=>{x.items.forEach(i=>i.hidden=!x.open);x.l.textContent=(x.open?'�
 G.forEach((x,i)=>{x.l.setAttribute('role','button');x.l.tabIndex=0;x.open=i===0;const t=()=>{x.open=!x.open;paint(x)};x.l.onclick=t;x.l.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();t()}};paint(x)});
 const reveal=()=>{const a=host.querySelector('.nav-item.active');const x=a&&G.find(q=>q.items.includes(a));if(x&&!x.open){x.open=true;paint(x)}};
 new MutationObserver(()=>{try{reveal()}catch(e){}}).observe(document.getElementById('viewTitle'),{childList:true,characterData:true,subtree:true});reveal();sync();
+})();
+
+// ---- touch: pinch to zoom the diagram ----
+(function(){const g=document.getElementById('graph');if(!g)return;const pts=new Map();let d0=0,s0=1;
+const off=()=>state.view==='filesystem'||state.view==='osi'||state.view==='lab_transfer'||(graphData[state.view]&&graphData[state.view].lab);
+const dist=()=>{const a=[...pts.values()];return Math.hypot(a[0].x-a[1].x,a[0].y-a[1].y)};
+g.addEventListener('pointerdown',e=>{if(e.pointerType!=='touch'||off())return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size===2){d0=dist()||1;s0=state.scale;state.pan=null}},true);
+g.addEventListener('pointermove',e=>{if(!pts.has(e.pointerId))return;pts.set(e.pointerId,{x:e.clientX,y:e.clientY});if(pts.size!==2)return;e.stopImmediatePropagation();state.pan=null;state.scale=Math.max(.55,Math.min(3.5,s0*dist()/d0));const v=g.querySelector('.viewport');if(v)v.setAttribute('transform',`translate(${state.tx} ${state.ty}) scale(${state.scale})`)},true);
+['pointerup','pointercancel'].forEach(t=>g.addEventListener(t,e=>{pts.delete(e.pointerId)},true));
 })();
 </script>
 </body>
